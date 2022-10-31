@@ -1,5 +1,7 @@
 # Terra Miners
 
+![key](./docs/key.png)
+
 ## Generative NFT
 
 [Description of Equipment generative NFT](./creative/README.md)

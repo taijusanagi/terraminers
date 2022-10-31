@@ -10,14 +10,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/pro-theme": "^0.0.57",
     "@chakra-ui/react": "^2.3.6",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@fontsource/inter": "^4.5.14",
     "@next/font": "^13.0.0",
+    "@rainbow-me/rainbowkit": "^0.7.4",
     "framer-motion": "^6",
     "next": "13.0.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "wagmi": "^0.7.9"
   },
   "devDependencies": {
     "@types/node": "18.11.8",

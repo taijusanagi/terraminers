@@ -8,8 +8,18 @@
 
 ### Equipment
 
-0xEEeB47597825661a2077c6280a705b90F8749078
+https://trustscan.one/address/0xEEeB47597825661a2077c6280a705b90F8749078/transactions
 
 ### material
 
-0x23E8330bF482c894B2A257c8bB07D1d527ba5a8b
+https://trustscan.one/address/0x23E8330bF482c894B2A257c8bB07D1d527ba5a8b/transactions
+
+## Note
+
+Need to connect to Trust EVM for the demo
+
+![add-metamask](./docs/add-metamask.png)
+
+When you connect Trust EVM
+
+![add-metamask](./docs/add-metamask.png)

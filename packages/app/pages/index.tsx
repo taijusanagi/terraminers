@@ -9,8 +9,9 @@ import p5Types from "p5";
 import { useAccount, useSigner } from "wagmi";
 
 import { equipmentABI } from "../lib/abi/equipment";
+import { materialABI } from "../lib/abi/material";
 import { ethers } from "ethers";
-import { equipmentAddress } from "../lib/contract";
+import { equipmentAddress, materialAddress } from "../lib/contract";
 
 const Sketch = dynamic(import("react-p5"), {
   loading: () => <></>,
@@ -24,6 +25,8 @@ export default function Home() {
   const [mode, setMode] = useState<"loading" | "none" | "select" | "move">("loading");
   const [tokenIds, setTokenIds] = useState<string[]>([]);
   const [selectedTokenId, setSelectedTokenId] = useState("");
+
+  const [balance, setBalance] = useState("");
 
   const setup = (p5: p5Types, canvasParentRef: Element) => {
     p5.createCanvas(p5.windowWidth, p5.windowHeight / 1.5).parent(canvasParentRef);
@@ -89,19 +92,19 @@ export default function Home() {
       return;
     }
 
-    console.log(selectedTokenId.toString());
-    const contract = new ethers.Contract(equipmentAddress, equipmentABI, signer);
-    await contract.move(selectedTokenId, dir);
-    setMode("move");
+    try {
+      const contract = new ethers.Contract(equipmentAddress, equipmentABI, signer);
+      await contract.move(selectedTokenId, dir);
+    } catch (e) {
+      alert("need to wait cooldown time!");
+    }
   };
 
   useEffect(() => {
     const provider = new ethers.providers.JsonRpcProvider("https://api.testnet-dev.trust.one/");
     const contract = new ethers.Contract(equipmentAddress, equipmentABI, provider);
 
-    contract.ownerOf(1).then((owner) => {
-      console.log("owner", owner);
-    });
+    const material = new ethers.Contract(materialAddress, materialABI, provider);
 
     const filter = contract.filters.Mined();
     contract.queryFilter(filter).then((logs) => {
@@ -114,22 +117,22 @@ export default function Home() {
         setMode("select");
       }
     });
+
+    material.balanceOf(address).then((balance: any) => {
+      setBalance(balance.toString());
+    });
   }, [address]);
 
   useEffect(() => {
     if (mode !== "move") {
       return;
     }
-
     const provider = new ethers.providers.JsonRpcProvider("https://api.testnet-dev.trust.one/");
     const contract = new ethers.Contract(equipmentAddress, equipmentABI, provider);
-
     contract.locations(selectedTokenId).then((location: any) => {
-      console.log("current location...");
-      console.log("x", location.x.toString());
-      console.log("y", location.x.toString());
+      console.log(location);
     });
-  }, [mode]);
+  }, [mode, selectedTokenId]);
 
   return (
     <Flex minHeight={"100vh"} direction={"column"}>
@@ -147,9 +150,6 @@ export default function Home() {
       </Container>
       {mode === "loading" && (
         <>
-          {/* <Stack mb="4">
-            <Sketch setup={setup} draw={draw} />
-          </Stack> */}
           <Container maxW="2xl" mb="4">
             <Box py="4" px="4" boxShadow={"base"} borderRadius="2xl" bgColor={"white"}>
               <Text fontSize="xl" fontWeight={"bold"} textAlign="center">
@@ -196,13 +196,18 @@ export default function Home() {
           </Container>
         </>
       )}
-
       {mode === "move" && (
         <>
           <Stack mb="4">
             <Sketch setup={setup} draw={draw} />
           </Stack>
-          <Container maxW="2xl" mb="4">
+          <Container maxW="2xl" mb="4" position="relative">
+            <Stack position={"absolute"} top="-40">
+              <Text fontWeight="bold">Current Location</Text>
+              <Text fontSize="xs">Searching...</Text>
+              <Text fontWeight="bold">Material Balance</Text>
+              <Text fontSize="xs">{ethers.utils.formatEther(balance)} TMM</Text>
+            </Stack>
             <Box py="4" px="4" boxShadow={"base"} borderRadius="2xl" bgColor={"white"}>
               <Text fontSize="xl" fontWeight={"bold"} mb="4" textAlign="center">
                 Direction

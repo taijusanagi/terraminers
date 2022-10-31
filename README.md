@@ -10,11 +10,13 @@
 
 ### Equipment
 
-https://trustscan.one/address/0xEEeB47597825661a2077c6280a705b90F8749078/transactions
+https://trustscan.one/address/0x0BE17C4B6143e5f446B0138873d6dd74a62C76b1/transactions
 
 ### material
 
-https://trustscan.one/address/0x23E8330bF482c894B2A257c8bB07D1d527ba5a8b/transactions
+https://trustscan.one/address/0x19EE00782B6A7f0B6f1FCeA646Fadb98f07aDA19/transactions
+
+- This contract is updated after submission because of a bug
 
 ## Note
 

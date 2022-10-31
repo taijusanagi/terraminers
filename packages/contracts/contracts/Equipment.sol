@@ -47,6 +47,7 @@ contract Equipment is Ownable, ERC721 {
   function mint() public payable {
     require(msg.value == price, "Equipment: msg value invalid");
     uint256 tokenId = totalSupply;
+    _mint(msg.sender, tokenId);
     totalSupply++;
     locations[tokenId] = calculateLocation(tokenId, blockhash(block.number - 1));
     _mine(tokenId);
